@@ -1,3 +1,4 @@
+
 import { UserButton, auth } from "@clerk/nextjs";
 import MainNav from "@/components/main-nav";
 import StoreSwitcher from "@/components/store-switcher";
@@ -18,7 +19,6 @@ const Navbar = async () => {
 
   return (
     <div className="border-b">
-      s
       <div className="flex h-16 items-center px-4">
         <StoreSwitcher items={stores}/>
         <MainNav className="mx-6" />

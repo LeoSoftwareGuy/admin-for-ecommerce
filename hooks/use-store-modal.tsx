@@ -11,5 +11,3 @@ export const useStoreModal = create<useStoreModalStore>((set) => ({
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
 }));
-
-export default useStoreModal;
