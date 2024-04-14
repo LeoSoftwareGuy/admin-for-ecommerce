@@ -1,5 +1,5 @@
 "use client";
-// Entire purpose of this component is to advert hidration error from hapening
+// Entire purpose of this component is to avert hidration error from hapening
 // when back and front are not in sync
 import { StoreModal } from "@/components/modals/store-modal";
 
