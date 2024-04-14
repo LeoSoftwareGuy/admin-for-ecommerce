@@ -81,7 +81,7 @@ model Product {
   name        String
   price       Float // should be decimal in original but prisma ORM does not support this type
   isFeatured  Boolean  @default(false)
-  isArchieved Boolean  @default(false)
+  isArchived Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
