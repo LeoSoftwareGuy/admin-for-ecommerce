@@ -159,27 +159,31 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <FormField
             control={form.control}
             name="images"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Images</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value.map((image) => image.url)}
-                    disabled={loading}
-                    onChange={(url) =>
-                      field.onChange([...field.value, { url }])
-                    }
-                    onRemove={(url) =>
-                      field.onChange([
-                        ...field.value.filter((current) => current.url !== url),
-                      ])
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              console.log("Uploaded images:", field.value); // Log the uploaded images
+              return (
+                <FormItem>
+                  <FormLabel>Images</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      value={field.value.map((image) => image.url)}
+                      disabled={loading}
+                      onChange={(url) =>
+                        field.onChange([...field.value, { url }])
+                      }
+                      onRemove={(url) =>
+                        field.onChange(
+                          field.value.filter((current) => current.url !== url)
+                        )
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
+
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
