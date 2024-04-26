@@ -56,7 +56,7 @@ export async function PATCH(req: Request, { params }: { params: IParams }) {
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
-        id: params.storeId,
+        id: storeId,
         userId,
       },
     });
