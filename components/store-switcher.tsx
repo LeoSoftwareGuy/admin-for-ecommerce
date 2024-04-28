@@ -36,90 +36,92 @@ interface StoreSwitcherProps extends PopoverTriggerProps {
   items: Store[];
 }
 
-const StoreSwitcher = ({ className, items = [] }: StoreSwitcherProps) => {
-  const storeModal = useStoreModal();
-  const params = useParams();
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
+const StoreSwitcher = React.memo(
+  ({ className, items = [] }: StoreSwitcherProps) => {
+    const storeModal = useStoreModal();
+    const params = useParams();
+    const router = useRouter();
+    const [open, setOpen] = useState(false);
 
-  const formattedItems = items.map((item) => ({
-    label: item.name,
-    value: item.id,
-  }));
+    const formattedItems = items.map((item) => ({
+      label: item.name,
+      value: item.id,
+    }));
 
-  const currentStore = formattedItems.find(
-    (item) => item.value === params.storeId
-  );
+    const currentStore = formattedItems.find(
+      (item) => item.value === params.storeId
+    );
 
-  const onStoreSelect = useCallback(
-    (store: { value: string; label: string }) => {
+    const onStoreSelect = useCallback(
+      (store: { value: string; label: string }) => {
+        setOpen(false);
+        router.push(`/${store.value}`);
+      },
+      [setOpen, router]
+    );
+
+    const onCreateNewStore = useCallback(() => {
       setOpen(false);
-      router.push(`/${store.value}`);
-    },
-    [setOpen]
-  );
+      storeModal.onOpen();
+    }, [setOpen, storeModal]);
 
-  const onCreateNewStore = useCallback(() => {
-    setOpen(false);
-    storeModal.onOpen();
-  }, [setOpen, storeModal]);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          role="combobox"
-          aria-expanded={open}
-          aria-label="Select a store"
-          className={cn("w-[200px] justify-between", className)}
-        >
-          <StoreIcon className="mr-2 h-4 w-4" />
-          {currentStore?.label}
-          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandList>
-            <CommandInput placeholder="Search store..." />
-            <CommandEmpty>No store found.</CommandEmpty>
-            <CommandGroup heading="Stores">
-              {formattedItems.map((store) => (
-                <CommandItem
-                  key={store.value}
-                  onSelect={() => onStoreSelect(store)}
-                  className="text-sm"
-                  data-d
-                >
-                  <StoreIcon className="mr-2 h-4 w-4" />
-                  {store.label}
-                  <Check
-                    className={cn(
-                      "ml-auto h-4 w-4",
-                      currentStore?.value === store.value
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
+    return (
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            role="combobox"
+            aria-expanded={open}
+            aria-label="Select a store"
+            className={cn("w-[200px] justify-between", className)}
+          >
+            <StoreIcon className="mr-2 h-4 w-4" />
+            {currentStore?.label}
+            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px] p-0">
+          <Command>
+            <CommandList>
+              <CommandInput placeholder="Search store..." />
+              <CommandEmpty>No store found.</CommandEmpty>
+              <CommandGroup heading="Stores">
+                {formattedItems.map((store) => (
+                  <CommandItem
+                    key={store.value}
+                    onSelect={() => onStoreSelect(store)}
+                    className="text-sm"
+                    data-d
+                  >
+                    <StoreIcon className="mr-2 h-4 w-4" />
+                    {store.label}
+                    <Check
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        currentStore?.value === store.value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+            <CommandSeparator />
+            <CommandList>
+              <CommandGroup>
+                <CommandItem onSelect={onCreateNewStore}>
+                  <PlusCircle className="mr-2 h-5 w-5" />
+                  Create Store
                 </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-          <CommandSeparator />
-          <CommandList>
-            <CommandGroup>
-              <CommandItem onSelect={onCreateNewStore}>
-                <PlusCircle className="mr-2 h-5 w-5" />
-                Create Store
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-};
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+);
 
 export default StoreSwitcher;
